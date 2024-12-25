@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export type ConnectWithUsType = {
   className?: string;
@@ -15,7 +15,25 @@ const ConnectWithUs: React.FC<ConnectWithUsType> = ({ className = "" }) => {
     message: ''
   });
 
-  
+  const [emailStyle, setEmailStyle] = useState<React.CSSProperties>({ borderBottom: "1px solid gray" });
+  useEffect(() => {
+    const checkScreen = () => {
+      if (window.innerWidth < 800) {
+
+        setEmailStyle({ marginTop: "1.5rem", borderBottom: "1px solid gray" });
+
+
+      } else {
+
+        setEmailStyle({ borderBottom: "1px solid gray" });
+
+      }
+    };
+
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -36,7 +54,7 @@ const ConnectWithUs: React.FC<ConnectWithUsType> = ({ className = "" }) => {
     try {
       const response = await fetch('/api/send-email', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
@@ -49,7 +67,7 @@ const ConnectWithUs: React.FC<ConnectWithUsType> = ({ className = "" }) => {
       }
 
       const data = await response.json();
-      
+
       if (data.success) {
         alert('Message sent successfully!');
         setFormData({
@@ -90,16 +108,18 @@ const ConnectWithUs: React.FC<ConnectWithUsType> = ({ className = "" }) => {
               placeholder="Name*"
               value={formData.name}
               onChange={handleChange}
-              className="border-b pb-3 outline-none text-lg placeholder:text-gray-800 text-muted-foreground opacity-50 text-[17px] border-b border-gray-400"
+              style={{ borderBottom: "1px solid gray" }}
+              className="border-b border-gray-500 pb-3 outline-none text-lg placeholder:text-gray-800 text-muted-foreground opacity-50 text-[17px] border-b border-gray-400"
             />
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col" >
             <input
               type="email"
               name="email"
               placeholder="Email*"
               value={formData.email}
               onChange={handleChange}
+              style={emailStyle}
               className="border-b border-gray-200 pb-3 outline-none text-lg placeholder:text-gray-800 text-muted-foreground opacity-50 text-[17px] border-b border-gray-400"
             />
           </div>
@@ -110,6 +130,7 @@ const ConnectWithUs: React.FC<ConnectWithUsType> = ({ className = "" }) => {
               placeholder="Phone Number"
               value={formData.phone}
               onChange={handleChange}
+              style={{ borderBottom: "1px solid gray" }}
               className="border-b border-gray-200 pb-3 outline-none text-lg placeholder:text-gray-800 text-muted-foreground opacity-50 text-[17px] border-b border-gray-400"
             />
           </div>
@@ -120,6 +141,7 @@ const ConnectWithUs: React.FC<ConnectWithUsType> = ({ className = "" }) => {
               placeholder="Country*"
               value={formData.country}
               onChange={handleChange}
+              style={{ borderBottom: "1px solid gray" }}
               className="border-b border-gray-200 pb-3 outline-none text-lg placeholder:text-gray-800 text-muted-foreground opacity-50 text-[17px] border-b border-gray-400"
             />
           </div>
@@ -130,6 +152,7 @@ const ConnectWithUs: React.FC<ConnectWithUsType> = ({ className = "" }) => {
               placeholder="Company Name*"
               value={formData.companyName}
               onChange={handleChange}
+              style={{ borderBottom: "1px solid gray" }}
               className="border-b border-gray-200 pb-3 outline-none text-lg placeholder:text-gray-800 text-muted-foreground opacity-50 text-[17px] border-b border-gray-400"
             />
           </div>
@@ -140,6 +163,7 @@ const ConnectWithUs: React.FC<ConnectWithUsType> = ({ className = "" }) => {
               placeholder="Position*"
               value={formData.position}
               onChange={handleChange}
+              style={{ borderBottom: "1px solid gray" }}
               className="border-b border-gray-200 pb-3 outline-none text-lg placeholder:text-gray-800 text-muted-foreground opacity-50 text-[17px] border-b border-gray-400"
             />
           </div>
@@ -150,6 +174,7 @@ const ConnectWithUs: React.FC<ConnectWithUsType> = ({ className = "" }) => {
               placeholder="Message"
               value={formData.message}
               onChange={handleChange}
+              style={{ borderBottom: "1px solid gray" }}
               className="border-b border-gray-200 pb-3 outline-none text-lg placeholder:text-gray-800 text-muted-foreground opacity-50 text-[17px] border-b border-gray-400"
             />
           </div>
